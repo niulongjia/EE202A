@@ -57,7 +57,6 @@ public class DirectionFinder extends AsyncTask<Object,String,String>
         Route R=new Route();
         try {  R=new DataParser().parseGoogleDirectionApi(jsonData);  }
         catch (JSONException e) {  e.printStackTrace();  }
-        Log.d("debugMsg2","Before entering function");
 
         showPolyLinesOnMap(R);
         delegate.directionFinderTransfer(originLatLng);
@@ -72,7 +71,7 @@ public class DirectionFinder extends AsyncTask<Object,String,String>
                 .color(Color.BLUE)
                 .width(5);
         polyline=mGoogleMap.addPolyline(polyOption);
-        Log.d("debugMsg2","after draw poly line"+Integer.toString(polyline.getPoints().size()));
+
 
     }
 

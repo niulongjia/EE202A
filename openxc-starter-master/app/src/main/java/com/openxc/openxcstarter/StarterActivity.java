@@ -99,14 +99,11 @@ public class StarterActivity extends Activity implements
     public Marker marker;
     public Circle circle;
     public Polyline polyline;
-    //public String Origin;
-    //public String Destination;
 
     //public Route route;
     public LatLng originLatLng;
     public LatLng destinationLatLng;
 
-    public GetNearbyGasStation getNearbyGasStation ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +124,6 @@ public class StarterActivity extends Activity implements
         MapFragment mapFragment=(MapFragment)getFragmentManager().findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
 
-        getNearbyGasStation = new GetNearbyGasStation(this);
     }
 
     @Override
@@ -330,50 +326,33 @@ public class StarterActivity extends Activity implements
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
-        Log.d("debugMsg2","onMapReady");
         mGoogleMap=googleMap;
 
         showCarMarkerOnMap();
-        Log.d("debugMsg2","onMapReady2");
 
-        //LatLng ll=new LatLng(latitude_val,longitude_val);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude_val,longitude_val),14 ));
+        LatLng ll=new LatLng(latitude_val,longitude_val);
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ll,14 ));
 
         showCircleOnMap();
-        //mGoogleMap.setMyLocationEnabled(true);
-        Log.d("debugMsg2","onMapReady3");
+
         mGoogleApiClient=new GoogleApiClient.Builder(this)
                             .addApi(LocationServices.API)
                             .addConnectionCallbacks(this)
                             .addOnConnectionFailedListener(this)
                             .build();
         mGoogleApiClient.connect();
-        Log.d("debugMsg2","onMapReady4");
-        /*
-        String url=getGasStationUrl(latitude_val,longitude_val);
-        url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&key=AIzaSyCVQyng9aT7sk_tTmUVB5ijYyXx3u8rIeM";
-        String jsonData=readGasStationUrl(url);
-        mNearbyDataView.setText(jsonData);
-        */
-        Log.d("debugMsg2","onMapReady5");
+
         mfindGasStationBtn = (Button)findViewById(R.id.findGasStation);
         mfindGasStationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //asyncGetNearbyGasStation();
-                //polyline.remove();
-                //mGoogleMap.clear();
-                Log.d("debugMsg2","before setText");
-                //Log.d("debugMsg2","Ready to see originLatLng");
-                //Log.d("debugMsg2", Double.toString(test.latitude)+"," +Double.toString(test.longitude) );
+                mGoogleMap.clear();
                 mNearbyDataView.setText(
                         Double.toString(destinationLatLng.latitude)+","
                         +Double.toString(destinationLatLng.longitude) );
-                Log.d("debugMsg2","before afterText");
-                //asyncGetDirectionToGasStation();
+                asyncGetDirectionToGasStation();
             }
         });
-        Log.d("debugMsg2","onMapReady6");
     }
 
     // This is used to track real-time positions.
@@ -464,12 +443,10 @@ public class StarterActivity extends Activity implements
         DataTransfer[3]=mNearbyDataView;
         DataTransfer[4]=PROXIMITY_RADIUS;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getNearbyGasStation.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, DataTransfer);
-            //new GetNearbyGasStation(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, DataTransfer);
+            new GetNearbyGasStation(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, DataTransfer);
         }
         else {
-            getNearbyGasStation.execute(DataTransfer);
-            //new GetNearbyGasStation(this).execute(DataTransfer);
+            new GetNearbyGasStation(this).execute(DataTransfer);
         }
     }
     public void asyncGetDirectionToGasStation()

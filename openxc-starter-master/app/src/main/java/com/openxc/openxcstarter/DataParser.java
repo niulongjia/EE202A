@@ -24,12 +24,11 @@ public class DataParser
         if (jsonData == null)
             return new Route();
 
-        //List<Route> routes = new ArrayList<Route>();
         JSONObject jsonObject = new JSONObject(jsonData);
         JSONArray jsonRoutes = jsonObject.getJSONArray("routes");
         // If we set "alternative=true" in URL, then jsonRoutes.length() may be larger than one
         // Otherwise, there will only be one route. So we do not need loop
-        //for (int i = 0; i < jsonRoutes.length(); i++) {
+
             JSONObject jsonRoute = jsonRoutes.getJSONObject(0);
             Route route = new Route();
 
@@ -49,8 +48,6 @@ public class DataParser
             route.setEndLatLng( new LatLng(jsonEndLocation.getDouble("lat"), jsonEndLocation.getDouble("lng")) );
             route.setPoints( decodePoly(overview_polylineJson.getString("points")) );
 
-            //routes.add(route);
-        //}
         return route;
     }
     /**
