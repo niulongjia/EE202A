@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.openxc.openxcstarter.fragment2"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="Fuel Consume:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fuel_consume"
+        android:textSize="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/latitude"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Brake Status:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/brake_status"
+        tools:ignore="HardcodedText"
+        android:textSize="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/fuel_consume"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Fuel Level:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fuel_level"
+        android:textSize="20dp"
+        android:layout_above="@+id/brake_status"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/engine_speed"
+        android:text="Engine speed (RPM):"
+        android:textSize="20dp"
+        android:layout_above="@+id/fuel_level"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:text="Latitude:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/latitude"
+        android:textSize="20dp"
+        android:layout_above="@+id/longitude"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:text="Longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/longitude"
+        android:textSize="20dp"
+        android:layout_above="@+id/vehicle_speed"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:text="Vehicle Speed:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/vehicle_speed"
+        android:textSize="20dp"
+        android:layout_above="@+id/birthtime"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:text="Birthtime:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/birthtime"
+        android:textSize="20dp"
+        android:layout_marginBottom="156dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        />
+
+</LinearLayout>
