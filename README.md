@@ -1,14 +1,13 @@
 # EE202A
 Smart Fuel Detection using OpenXC Vehicle Simulator  
-Version 1.0 basically contains three components:  
-### 1. Google Map API:  
-Allowing users to browse Google Map.
-### 2. Google Place API
-Allowing users to browse gas stations within a circle range centered at the car.
-### 3. Google Direction API
-Showing users the route to the nearest gas station by clicking one button.
-### 4. OpenXC Listener (Implemented by default open-source)
-Listening to and constantly updating the OpenXC vehicle data.  
-Displaying vehicle data on screen.<br/>
-# OpenXC Starter Application Version 1.0 Screenshot:  
-![version1 0](https://cloud.githubusercontent.com/assets/15698323/19789782/749be334-9c67-11e6-83db-1cc2346ea96f.jpg)
+Version 2.1 upgrades in four aspects:  
+### 1. Enable Google Direction between any address:  
+Enable path finding functionalities similar to Google Map App.
+### 2. Add time and distance textview
+Show the time and distance taken from origin to destination.
+### 3. Integrate Google Autocomplete API
+When the user is typing in address name, a list of suggestions will pop up, which allows the user to select.
+### 4. Handle some exceptions
+Found some bugs and fix them.
+# OpenXC Starter Application Version 2.1 Screenshot:  
+![version2 1](https://cloud.githubusercontent.com/assets/15698323/20642561/d45f0262-b3c6-11e6-9953-a9a0ebd4356b.jpg)
