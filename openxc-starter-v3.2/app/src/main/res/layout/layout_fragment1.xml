@@ -8,8 +8,14 @@
         android:layout_width="match_parent"
         android:orientation="horizontal">
 
+        <Button android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:id="@+id/currentLocation"
+            android:text="!"
+            android:visibility="visible" />
+
         <AutoCompleteTextView
-            android:layout_width="290dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:id="@+id/autoComplete1"
             android:hint="Enter Start Address"
@@ -18,18 +24,26 @@
             android:textSize="15dp"
             android:inputType="textMultiLine"/>
 
+
         <Button android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/clearAutoStart"
             android:text="X"
             android:visibility="visible" />
+
     </LinearLayout>>
     <LinearLayout android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal">
 
+        <Button android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:id="@+id/currentLocation2"
+            android:text="!"
+            android:visibility="visible" />
+
         <AutoCompleteTextView
-            android:layout_width="290dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:id="@+id/autoComplete2"
             android:hint="Enter Destination Address"

@@ -1,7 +1,9 @@
 package com.openxc.openxcstarter;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,7 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +33,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -85,7 +91,8 @@ public class fragment1 extends Fragment implements
 
     public MapView mapView;
     public GoogleMap googleMap;
-
+    public GoogleApiClient googleApiClient;
+    public LocationRequest locationRequest;
     // location of the car.
     // Default Drake Stadium UCLA.
     public double latitude_val=34.071985;
@@ -95,6 +102,9 @@ public class fragment1 extends Fragment implements
     public LatLng destinationLatLng;
 
     // location of start and end address (Used for "find path" button).
+    public double currentLatitude=0.0;
+    public double currentLongitude=0.0;
+    public boolean mapFirstOpened=true;
     public String startAddrName;
     public String endAddrName;
     public LatLng startAddrLatLng;
@@ -121,13 +131,16 @@ public class fragment1 extends Fragment implements
 
     private static final double PROXIMITY_RADIUS=1000.0;
 
-    //public TextView mNearbyDataView;
-    public Button mfindGasStationBtn;
     public Button mfindPathBtn;
+    public boolean findPathClicked=false;
+    public Button mfindGasStationBtn;
+    public Button mcurrentLocation;
+    public Button mcurrentLocation2;
+
     public AutoCompleteTextView autoCompView1;
     public AutoCompleteTextView autoCompView2;
-    public Button clearAutoStartBtn;
-    public Button clearAutoEndBtn;
+    public Button mclearAutoStartBtn;
+    public Button mclearAutoEndBtn;
 
     public TextView timeTextView;
     public TextView distTextView;
@@ -148,6 +161,9 @@ public class fragment1 extends Fragment implements
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.layout_fragment1,container,false);
 
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            checkLocationPermission();
+        }
         /*** Use mapView inside fragment ***/
         mapView=(MapView)view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -190,19 +206,36 @@ public class fragment1 extends Fragment implements
         });
 
         mfindGasStationBtn = (Button)view.findViewById(R.id.findGasStation);
-        //mNearbyDataView=(TextView)view.findViewById(R.id.nearbyData);
         mfindPathBtn=(Button)view.findViewById(R.id.findPath);
-        clearAutoStartBtn=(Button)view.findViewById(R.id.clearAutoStart);
-        clearAutoEndBtn=(Button)view.findViewById(R.id.clearAutoEnd);
+        mcurrentLocation=(Button)view.findViewById(R.id.currentLocation);
+        mcurrentLocation2=(Button)view.findViewById(R.id.currentLocation2);
+
+        mclearAutoStartBtn=(Button)view.findViewById(R.id.clearAutoStart);
+        mclearAutoEndBtn=(Button)view.findViewById(R.id.clearAutoEnd);
 
         timeTextView=(TextView)view.findViewById(R.id.textView4);
         distTextView=(TextView)view.findViewById(R.id.textView5);
 
+        mcurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autoCompView1.setText(Double.toString(currentLatitude)+","+Double.toString(currentLongitude));
+                startAddrName=Double.toString(currentLatitude)+","+Double.toString(currentLongitude);
+            }
+        });
+        mcurrentLocation2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autoCompView2.setText(Double.toString(currentLatitude)+","+Double.toString(currentLongitude));
+                endAddrName = Double.toString(currentLatitude)+","+Double.toString(currentLongitude);
+            }
+        });
         /*** This is the function when you press "find path" button ***/
         mfindPathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                findPathClicked=true;
                 /*** Clean previous polylines and markers ***/
                 if (polylineD!=null) polylineD.remove();
 
@@ -230,9 +263,15 @@ public class fragment1 extends Fragment implements
                      from startAddrName to endAddrName ***/
                 if (nearbyPlacesList_unique!=null) nearbyPlacesList_unique.clear();
 
-                /*** This function is to generate and draw route from startAddrName to endAddrName ***/
-                /*** It will transfer { polylineD, routes, nearbyPlacesList_unique, markerList } back ***/
-                asyncGetDirectionFromStartToEnd();
+                if (startAddrName==null || startAddrName.isEmpty()) { Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_LONG).show();}
+                else if (endAddrName==null || endAddrName.isEmpty()) { Toast.makeText(getActivity(), "Please enter destination address!", Toast.LENGTH_LONG).show();}
+                else
+                {
+                    /*** This function is to generate and draw route from startAddrName to endAddrName ***/
+                    /*** It will transfer { polylineD, routes, nearbyPlacesList_unique, markerList } back ***/
+                    asyncGetDirectionFromStartToEnd();
+                }
+
 
             }
         });
@@ -241,39 +280,44 @@ public class fragment1 extends Fragment implements
             @Override
             public void onClick(View view) {
 
-                if (polylineD!=null) polylineD.remove();
-                if (polylineGBest!=null) polylineGBest.remove();
-                if (polylineGList!=null && polylineGList.size()>0)
+                if (findPathClicked==false) { Toast.makeText(getActivity(), "Press the \"FIND PATH\" first before press \"FIND GAS\"!", Toast.LENGTH_LONG).show();}
+                else if (startAddrName==null || startAddrName.isEmpty()) { Toast.makeText(getActivity(), "Please enter origin address and press \"FIND PATH\" first!", Toast.LENGTH_LONG).show(); }
+                else if (endAddrName==null || endAddrName.isEmpty()) { Toast.makeText(getActivity(), "Please enter destination address and press \"FIND PATH\" first!", Toast.LENGTH_LONG).show(); }
+                else
                 {
-                    for (int i=0;i<polylineGList.size();i++) polylineGList.get(i).remove();
-                    polylineGList.clear();
-                }
-                /*** We already got nearbyPlacesList_unique, routes is not necessary ***/
-                routes=new Route();
-                routesGList.clear();
-                timeGList.clear();
-                /*** We will iterate nearbyPlacesList_unique to go through every gas station
+                    findPathClicked=false;
+                    if (polylineD!=null) polylineD.remove();
+                    if (polylineGBest!=null) polylineGBest.remove();
+                    if (polylineGList!=null && polylineGList.size()>0)
+                    {
+                        for (int i=0;i<polylineGList.size();i++) polylineGList.get(i).remove();
+                        polylineGList.clear();
+                    }
+                    /*** We already got nearbyPlacesList_unique, routes is not necessary ***/
+                    routes=new Route();
+                    routesGList.clear();
+                    timeGList.clear();
+                    /*** We will iterate nearbyPlacesList_unique to go through every gas station
                      and find the best path through one of them ***/
 
-                if (nearbyPlacesList_unique.size()==0)
-                    Toast.makeText(getActivity(), "Can not find gas stations nearby!", Toast.LENGTH_SHORT).show();
-                for (int i=0;i<nearbyPlacesList_unique.size();i++)
-                {
-                    HashMap<String,String> nearbyPlace=nearbyPlacesList_unique.get(i);
-                    asyncGetDirectionViaGasStation(nearbyPlace.get("vicinity"));
+                    if (nearbyPlacesList_unique.size()==0)
+                        Toast.makeText(getActivity(), "Can not find gas stations nearby!", Toast.LENGTH_LONG).show();
+                    for (int i=0;i<nearbyPlacesList_unique.size();i++)
+                    {
+                        HashMap<String,String> nearbyPlace=nearbyPlacesList_unique.get(i);
+                        asyncGetDirectionViaGasStation(nearbyPlace.get("vicinity"));
+                    }
                 }
-
-
             }
         });
-        clearAutoStartBtn.setOnClickListener(new View.OnClickListener() {
+        mclearAutoStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 autoCompView1.setText("");
                 startAddrName=null;
             }
         });
-        clearAutoEndBtn.setOnClickListener(new View.OnClickListener() {
+        mclearAutoEndBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 autoCompView2.setText("");
@@ -288,15 +332,7 @@ public class fragment1 extends Fragment implements
     /*** startAddrName -> endAddrName ***/
     public void asyncGetDirectionFromStartToEnd()
     {
-        if (startAddrName==null || startAddrName.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if (endAddrName==null || endAddrName.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter destination address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         Object[] DataTransfer = new Object[10];
         /*** This is the start address ***/
@@ -324,16 +360,16 @@ public class fragment1 extends Fragment implements
     public void asyncGetDirectionViaGasStation(String gasStationAddrName)
     {
         if (startAddrName==null || startAddrName.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please enter origin address!", Toast.LENGTH_LONG).show();
             return;
         }
         if (endAddrName==null || endAddrName.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter destination address!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please enter destination address!", Toast.LENGTH_LONG).show();
             return;
         }
         if (gasStationAddrName==null || gasStationAddrName.length()==0)
         {
-            Toast.makeText(getActivity(), "Can find gas station nearby /nButGas station information empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Can find gas station nearby /nButGas station information empty!", Toast.LENGTH_LONG).show();
             return;
         }
         Object[] DataTransfer = new Object[10];
@@ -465,8 +501,20 @@ public class fragment1 extends Fragment implements
 
     }*/
 
+    /*** http://www.androidtutorialpoint.com/intermediate/android-map-app-showing-current-location-android/ ***/
     @Override
-    public void onConnected(@Nullable Bundle bundle) {}
+    public void onConnected(@Nullable Bundle bundle)
+    {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(1000); //in milliseconds.
+        locationRequest.setFastestInterval(1000); //in milliseconds.
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
+    }
 
     @Override
     public void onConnectionSuspended(int i) {}
@@ -475,25 +523,57 @@ public class fragment1 extends Fragment implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
     @Override
-    public void onLocationChanged(Location location) {}
+    public void onLocationChanged(Location location)
+    {
+        //Toast.makeText(getActivity(), "Get current location successful!", Toast.LENGTH_LONG).show();
+        //Log.d("debugMsg13","latitude:"+location.getLatitude()+" longitude:"+location.getLongitude());
+        currentLatitude=location.getLatitude();
+        currentLongitude=location.getLongitude();
+        if (mapFirstOpened==true)
+        {
+            LatLng currentLL=new LatLng(currentLatitude,currentLongitude);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLL, 14));
+            mapFirstOpened=false;
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
         this.googleMap=googleMap;
 
-        showCarMarkerOnMap();
+        //showCarMarkerOnMap();
 
-        LatLng ll=new LatLng(latitude_val,longitude_val);
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ll,14 ));
+        //Initialize Google Play Services
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                googleMap.setMyLocationEnabled(true);
+            }
+        }
+        else {
+            buildGoogleApiClient();
+            googleMap.setMyLocationEnabled(true);
+        }
 
-        showCircleOnMap();
+        //showCircleOnMap();
     }
-    // show the marker of car.
-    public void showCarMarkerOnMap()
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+    }
+/*
+   // show the marker of car.
+    public void showCarMarkerOnMap(LatLng ll)
     {
         MarkerOptions markerOption=new MarkerOptions()
-                .position(new LatLng(latitude_val,longitude_val))
+                .position(ll)
                 .title("This is the car!")
                 //.snippet("Our Ford Car")
                 .icon(BitmapDescriptorFactory.fromResource( R.drawable.blue_circle) );
@@ -513,6 +593,7 @@ public class fragment1 extends Fragment implements
                 .strokeWidth(2);
         circle = googleMap.addCircle(circleOption);
     }
+    */
 
     // remove marker and circle on map.
     public void removeMarkerCircle()
@@ -521,7 +602,72 @@ public class fragment1 extends Fragment implements
         circle.remove();
     }
 
+    /*** http://www.androidtutorialpoint.com/intermediate/android-map-app-showing-current-location-android/ ***/
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    public boolean checkLocationPermission(){
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
 
+            // Asking user if explanation is needed
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                //Prompt the user once explanation has been shown
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+    /*** http://www.androidtutorialpoint.com/intermediate/android-map-app-showing-current-location-android/ ***/
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted. Do the
+                    // contacts-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        if (googleApiClient == null) {
+                            buildGoogleApiClient();
+                        }
+                        googleMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+
+                    // Permission denied, Disable the functionality that depends on this permission.
+                    Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other permissions this app might request.
+            // You can add here other case statements according to your requirement.
+        }
+    }
 
     /***
      These contents including AutoCompleteTextView can be found on:

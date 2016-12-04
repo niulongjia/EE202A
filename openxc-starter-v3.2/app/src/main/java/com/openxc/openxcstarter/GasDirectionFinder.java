@@ -158,13 +158,14 @@ public class GasDirectionFinder extends AsyncTask<Object,Integer,String>
 
     private void showPolyLinesOnMap(Route R)
     {
-        //polyline.remove();
         if (polyline!=null) Log.d("debugMsg2","before draw poly line"+Integer.toString(polyline.getPoints().size()));
         PolylineOptions polyOption=new PolylineOptions()
                 .addAll(R.getPoints())
                 .color(Color.BLUE)
                 .width(5);
         polyline=mGoogleMap.addPolyline(polyOption);
+        /*** we do not want to show all the lines, only show best route via gas station in fragment1 ***/
+        polyline.setVisible(false);
         Log.d("debugMsg2","after draw poly line"+Integer.toString(polyline.getPoints().size()));
 
     }
