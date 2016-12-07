@@ -19,9 +19,10 @@ public class TextChangedEvent
     public double odometer_val;
     public double fuelConsumed_val;
     public double fuelLevel_val;
-    public double totalFuel_val;
     public double latitude_val=34.052235;
     public double longitude_val=-118.243683;
+    public double totalFuel_val;
+
 
     public TextChangedEvent(
             SmartFuel smartFuel,

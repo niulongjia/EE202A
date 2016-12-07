@@ -2,36 +2,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.openxc.openxcstarter.fragment3">
+    tools:context="com.openxc.openxcstarter.fragment4">
 
-
-    <TextView
-        android:text="Creaters:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:id="@+id/textView3"
-        android:textSize="50dp"/>
+    <!-- TODO: Update blank fragment layout -->
 
     <TextView
         android:text="LONGJIA NIU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="91dp"
-        android:id="@+id/textView"
+        android:id="@+id/textView2"
         android:textSize="20dp"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp" />
 
     <TextView
         android:text="YANGHAN WANG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:id="@+id/textView2"
+        android:layout_marginTop="67dp"
+        android:id="@+id/textView3"
         android:textSize="20dp"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Creaters:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:id="@+id/textView"
+        android:textSize="50dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

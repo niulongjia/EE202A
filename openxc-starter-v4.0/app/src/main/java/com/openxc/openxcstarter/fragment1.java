@@ -119,15 +119,12 @@ public class fragment1 extends Fragment implements
     public boolean mapFirstOpened=true;
     public String startAddrName;
     public String endAddrName;
-    public LatLng startAddrLatLng;
-    public LatLng endAddrLatLng;
+
 
     public Marker marker;
     public Circle circle;
     public Polyline polylineD;
-    public boolean isSuccessful=true;
-    public String timeString;
-    public String distString;
+
     public Route routes;
     public String jsonData;
     public List<HashMap<String,String>> nearbyPlacesList_unique=new ArrayList<HashMap<String, String>>();
@@ -135,7 +132,6 @@ public class fragment1 extends Fragment implements
     public List<Marker> markerList=new ArrayList<Marker>();
 
     public List<Polyline> polylineGList=new ArrayList<Polyline>();
-    public List<Marker> markerGList=new ArrayList<Marker>();
     public List<Route> routesGList=new ArrayList<Route>();
     public List<Integer> timeGList = new ArrayList<Integer>();
     public List<String> toGasJsonDataGList = new ArrayList<String>();
@@ -144,8 +140,7 @@ public class fragment1 extends Fragment implements
     public Route routeGBest;
     public int timeGBest;
     public Marker markerGBest;
-    //public Route routesG;
-    //public int timeG;
+
 
     private static final double PROXIMITY_RADIUS=1000.0;
 

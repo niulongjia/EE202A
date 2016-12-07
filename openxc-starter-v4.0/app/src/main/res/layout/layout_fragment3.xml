@@ -1,0 +1,126 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.openxc.openxcstarter.fragment3"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:text="SteerWheelAngle (degrees):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/steerWheelAngle"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:text="TorqueAtTrans (Nm):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/torqueAtTransmission"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/engine_speed"
+        android:text="EngSpeed (RPM):"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:text="VehSpeed (km/h):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/vehicle_speed"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:text="AccelPedalPos (%):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/accelPedalPos"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:text="BrakeStatus (bool):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/brake_status"
+        tools:ignore="HardcodedText"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:text="Odometer (km):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/odometer"
+        tools:ignore="HardcodedText"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:text="FuelConsumed (L):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fuel_consume"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:text="FuelLevel (%):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fuel_level"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:text="GasolineTankSize (L):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/total_fuel"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:text="Latitude (degrees):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/latitude"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+
+        />
+
+    <TextView
+        android:text="Longitude (degrees)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/longitude"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"/>
+
+</LinearLayout>

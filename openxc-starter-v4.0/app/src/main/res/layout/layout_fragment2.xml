@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.openxc.openxcstarter.fragment2"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="80dp"
+        android:text="FuelAmountLeft (L):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fuelAmountLeft"
+        android:textSize="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"/>
+    <TextView
+        android:text="FuelConsumed Mean (to dest):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mean"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"/>
+    <TextView
+        android:text="FuelConsumed Var (to dest):"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/var"
+        android:textSize="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"
+        />
+    <TextView
+        android:text="To Dest Possibility:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/possibilityArriving"
+        android:textSize="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="40dp"
+        />
+
+    <TextView
+        android:text="Warnings Shown Below:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/warningsLabel"
+        android:textSize="30dp"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"
+        android:textColor="@android:color/holo_red_dark" />
+
+    <TextView
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toDestinationWarning"
+        android:textSize="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"/>
+    <TextView
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toGasStationWarning"
+        android:textSize="15dp"
+        android:layout_alignParentStart="true" />
+</LinearLayout>

@@ -116,39 +116,17 @@ public class StarterActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starter);
-        /***
-         * example of usage
 
-         Pair<Double, Double> est = sf.getFuelEstimation(jsonData);
-         double mean = est.first;
-         double variation = est.second;
-
-         ***/
-
-
-        /*** fragment2 ***/
-        /***
-         * 1. 当前导航路的总油耗
-         * 2. 基于当前总油量，能到达的概率 (mean stdvarr 正态分布< 总油量概率)
-         * 3. 对当前驾驶习惯打分(future)
-         * 4. mean>剩余油量的时候，给警告
-         * 5. start->gas->end 比 start->end 多多少距离时间油耗
-         * 6. 修改函数使车能够到达最近加油站
-         * 7. 如果到不了最近的加油站，警告(按照mean来)
-         ***/
-
-        /***
-         * steering_wheel_angle
-         *
-         * ***/
         // swipe to show three fragments
         // fragment1 --> google map
-        // fragment2 --> real time vehicle information
-        // fragment3 --> creaters
+        // fragment2 --> prediction results based on smartfuel model
+        // fragment3 --> vehicle information
+        // fragment4 --> creaters
         List<Fragment> fragments=new Vector<Fragment>();
         fragments.add(Fragment.instantiate(this,fragment1.class.getName()));
         fragments.add(Fragment.instantiate(this,fragment2.class.getName()));
         fragments.add(Fragment.instantiate(this,fragment3.class.getName()));
+        fragments.add(Fragment.instantiate(this,fragment4.class.getName()));
         mSwipeAdapter=new SwipeAdapter(getSupportFragmentManager(),fragments);
         viewPager=(ViewPager)findViewById(R.id.view_pager);
         viewPager.setAdapter(mSwipeAdapter);
@@ -337,17 +315,6 @@ public class StarterActivity extends FragmentActivity
             smartFuel.onOpenXCEvent(measurement);
         }
     };
-/*    // The FuelLevel is the current level of fuel in the gas tank.
-    FuelLevel.Listener mFuelLevelListener = new FuelLevel.Listener()
-    {
-        @Override
-        public void receive(Measurement measurement) {
-
-            FuelLevel fuelLevel=(FuelLevel) measurement;
-            fuellevel_val=fuelLevel.getValue().doubleValue();
-            sf.onOpenXCEvent(measurement);
-        }
-    };*/
 
     private ServiceConnection mConnection = new ServiceConnection()
     {
