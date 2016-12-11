@@ -1,4 +1,4 @@
-# EE202A
+# EE202A (Revise the smartfuel model!)
 Smart Fuel Detection using OpenXC Vehicle Simulator  
 Version 3.3 user guide:  
 ### 1. Enter start address (or press "!" to enter car GPS coordinates), end address (or press "!" to enter car GPS coordinates), and press "FIND PATH" button  
