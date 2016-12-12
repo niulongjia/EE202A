@@ -1,6 +1,6 @@
 # EE202A
 Smart Fuel Detection using OpenXC Vehicle Simulator  
-Version 3.3 user guide:  
+Version 4.0 user guide:  
 ### 1. Enter start address (or press "!" to enter car GPS coordinates), end address (or press "!" to enter car GPS coordinates), and press "FIND PATH" button  
 Show all the gas stations along the way in blue line.
 ![version4 0_1](https://cloud.githubusercontent.com/assets/15698323/20953658/0607a1d6-bbea-11e6-930f-9ed41c70184e.jpg)
@@ -15,7 +15,7 @@ Show the real-time vehicle information from OpenXC simulator.
 ![version4 0_4](https://cloud.githubusercontent.com/assets/15698323/20953657/060771ca-bbea-11e6-98b6-93191005135f.jpg)
 ### 5. Creaters page
 ![version4 0_5](https://cloud.githubusercontent.com/assets/15698323/20953656/06074ef2-bbea-11e6-9453-ea48ca512264.png)
-### Memo: version3.3 program structure (will update soon)
+### Memo: version4.0 program structure (will update soon)
 ![version3 2_struc](https://cloud.githubusercontent.com/assets/15698323/20862059/6259ce4c-b955-11e6-87e4-6827df2c342e.png)
 
 
