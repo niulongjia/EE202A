@@ -15,14 +15,3 @@ Show the real-time vehicle information from OpenXC simulator.
 ![version4 0_4](https://cloud.githubusercontent.com/assets/15698323/20953657/060771ca-bbea-11e6-98b6-93191005135f.jpg)
 ### 5. Creaters page
 ![version4 0_5](https://cloud.githubusercontent.com/assets/15698323/20953656/06074ef2-bbea-11e6-9453-ea48ca512264.png)
-### Memo: version4.0 program structure (will update soon)
-![version3 2_struc](https://cloud.githubusercontent.com/assets/15698323/20862059/6259ce4c-b955-11e6-87e4-6827df2c342e.png)
-
-
-
-
-
-
-
-
-
