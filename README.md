@@ -10,7 +10,3 @@ Show the route via the gas station which the model predicts the car can get to a
 ### 3. Vehicle information page
 On second page, it will show basic vehicle info and warning if the model predicts that the car can not arrive at destination or even can not arrive at the next gas station.
 ![version3 3_3](https://cloud.githubusercontent.com/assets/15698323/20903229/622b4f18-baef-11e6-8691-db4186582e53.jpg)
-### Memo: version3.3 program structure (will update soon)
-![version3 2_struc](https://cloud.githubusercontent.com/assets/15698323/20862059/6259ce4c-b955-11e6-87e4-6827df2c342e.png)
-
-
